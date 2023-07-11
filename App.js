@@ -1,20 +1,61 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { englishData } from "./src/Questions";
+import { useState } from "react";
+import QuestionItem from "./QuestionItem";
 
-export default function App() {
+const App = () => {
+  const [currentState, setCurrentState] = useState(1);
+  const [questions, setQuestions] = useState(englishData)
+
+
+  const OnSelectOption = (index, x) => {
+    const tempData = questions;
+    tempData.map((item,ind)=>{
+      if(index===ind){
+        item.marked = x
+      }
+    })
+    let temp = [];
+    tempData.map((item)=>{
+      temp.push(item)
+    })
+    setQuestions(temp)
+
+  };
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1 }}>
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: "600",
+          marginTop: 50,
+          marginLeft: 20,
+          color: "black",
+        }}
+      >
+        Questions:{" " + currentState + "/" + englishData.length}
+      </Text>
+
+      <View style={{ marginTop: 30 }}>
+        <FlatList
+          horizontal
+          data={questions}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => {
+            return (
+              <QuestionItem
+                data={item}
+                selectedOption={(x) => {
+                  OnSelectOption(index, x);
+                }}
+              />
+            );
+          }}
+        />
+      </View>
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
