@@ -1,27 +1,37 @@
 import { StatusBar } from "expo-status-bar";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { englishData } from "./src/Questions";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import QuestionItem from "./QuestionItem";
+const { height, width } = Dimensions.get('window')
+
+
 
 const App = () => {
   const [currentState, setCurrentState] = useState(1);
-  const [questions, setQuestions] = useState(englishData)
-
+  const [questions, setQuestions] = useState(englishData);
+  const listRef = useRef(new An)
 
   const OnSelectOption = (index, x) => {
     const tempData = questions;
-    tempData.map((item,ind)=>{
-      if(index===ind){
-        item.marked = x
+    tempData.map((item, ind) => {
+      if (index === ind) {
+        item.marked = x;
+        setCurrentState(x)
       }
-    })
+    });
     let temp = [];
-    tempData.map((item)=>{
-      temp.push(item)
-    })
-    setQuestions(temp)
-
+    tempData.map((item) => {
+      temp.push(item);
+    });
+    setQuestions(temp);
   };
   return (
     <View style={{ flex: 1 }}>
@@ -38,7 +48,11 @@ const App = () => {
       </Text>
 
       <View style={{ marginTop: 30 }}>
-        <FlatList
+        <FlatList 
+          onScroll={e=> {
+            const x = e.nativeEvent.contentOffset.x/width
+            setCurrentState(x.toFixed(0))
+          }}
           horizontal
           data={questions}
           showsHorizontalScrollIndicator={false}
@@ -53,6 +67,45 @@ const App = () => {
             );
           }}
         />
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          position: "absolute",
+          bottom: 50,
+          width: "100%",
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            backgroundColor: "purple",
+            height: 50,
+            width: 100,
+            borderRadius: 10,
+            marginLeft:20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "#fff" }}>Previous</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: "purple",
+            height: 50,
+            width: 100,
+            borderRadius: 10,
+            marginRight:20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "#fff" }}>Next</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

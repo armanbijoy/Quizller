@@ -35,7 +35,7 @@ const QuestionItem = ({ data, selectedOption}) => {
                   width: "90%",
                   height: 60,
                   elevation: 3,
-                  backgroundColor: data.marked === index+1 ? 'red' : "#fff",
+                  backgroundColor: data.marked === index+1 ? 'purple' : "#fff",
                   marginTop: 10,
                   marginBottom: 10,
                   alignSelf: "center",
@@ -54,10 +54,10 @@ const QuestionItem = ({ data, selectedOption}) => {
                     width: 30,
                     height: 30,
                     borderRadius: 15,
-                    backgroundColor: "cyan",
+                    backgroundColor:  data.marked === index+1 ? '#fff' : "cyan",
                   }}
                 >
-                  <Text style={{ fontWeight: "600" }}>
+                  <Text style={{ fontWeight: "600", color: '#000' }}>
                     {index === 0
                       ? "A"
                       : index === 1
@@ -73,6 +73,7 @@ const QuestionItem = ({ data, selectedOption}) => {
                     fontSize: 18,
                     fontWeight: "600",
                     marginLeft: 20,
+                    color: data.marked === index+1 ? '#fff' : '#000',
                   }}>
                   {item}
                 </Text>
